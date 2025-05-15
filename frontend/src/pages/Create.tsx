@@ -22,6 +22,8 @@ export default function Create() {
     updateLanguages,
     updateReferences,
     exportToJSON,
+    exportToPDF,
+    makeHTMLPreview,
     loadSavedData,
   } = useResumeData();
 
@@ -57,11 +59,11 @@ export default function Create() {
         <div className="flex-1 flex flex-col">
           <div className="flex justify-between items-center py-4 px-2">
             <div>
-              <Button className="bg-green-400">Make<Play /></Button>
+              <Button className="bg-green-400" onClick={makeHTMLPreview}>Make<Play /></Button>
             </div>
 
             <div className="flex gap-4">
-              <Button onClick={exportToJSON}>
+              <Button onClick={exportToPDF}>
                 <Download /> PDF
               </Button>
               <Button onClick={exportToJSON}>

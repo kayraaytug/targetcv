@@ -1,5 +1,5 @@
 // src/hooks/useResumeData.ts
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Basics,
   Work,
@@ -9,9 +9,8 @@ import {
   Project,
   Language,
   Reference,
-  ResumeData
+  ResumeData,
 } from "@/types";
-
 
 const initialResumeData: ResumeData = {
   basics: {
@@ -37,43 +36,53 @@ const initialResumeData: ResumeData = {
   skills: [],
   projects: [],
   languages: [],
-  references: []
+  references: [],
 };
 
 export function useResumeData() {
-  const [resumeData, setResumeData] = useState<ResumeData>(initialResumeData);
+  const [resumeData, setResumeData] = useState<ResumeData>(() => {
+    const stored = localStorage.getItem("resumeJson");
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch {
+        return initialResumeData;
+      }
+    }
+    return initialResumeData;
+  });
 
   // Update functions for each section
   const updateBasics = (basics: Basics) => {
-    setResumeData(prev => ({ ...prev, basics }));
+    setResumeData((prev) => ({ ...prev, basics }));
   };
 
   const updateWork = (work: Work[]) => {
-    setResumeData(prev => ({ ...prev, work }));
+    setResumeData((prev) => ({ ...prev, work }));
   };
 
   const updateEducation = (education: Education[]) => {
-    setResumeData(prev => ({ ...prev, education }));
+    setResumeData((prev) => ({ ...prev, education }));
   };
 
   const updateAwards = (awards: Award[]) => {
-    setResumeData(prev => ({ ...prev, awards }));
+    setResumeData((prev) => ({ ...prev, awards }));
   };
 
   const updateSkills = (skills: Skill[]) => {
-    setResumeData(prev => ({ ...prev, skills }));
+    setResumeData((prev) => ({ ...prev, skills }));
   };
 
   const updateProjects = (projects: Project[]) => {
-    setResumeData(prev => ({ ...prev, projects }));
+    setResumeData((prev) => ({ ...prev, projects }));
   };
 
   const updateLanguages = (languages: Language[]) => {
-    setResumeData(prev => ({ ...prev, languages }));
+    setResumeData((prev) => ({ ...prev, languages }));
   };
 
   const updateReferences = (references: Reference[]) => {
-    setResumeData(prev => ({ ...prev, references }));
+    setResumeData((prev) => ({ ...prev, references }));
   };
 
   // Export resume data as JSON
@@ -118,7 +127,7 @@ export function useResumeData() {
       if (json.education) newData.education = json.education;
       if (json.awards) newData.awards = json.awards;
       if (json.skills) newData.skills = json.skills;
-      
+
       if (json.projects) {
         newData.projects = json.projects.map((p: any) => ({
           name: p.name,
@@ -129,16 +138,51 @@ export function useResumeData() {
           url: p.url,
         }));
       }
-      
+
       if (json.languages) newData.languages = json.languages;
       if (json.references) newData.references = json.references;
 
       setResumeData(newData);
-
     } catch (error) {
       console.error("Error loading saved resume data:", error);
     }
   };
+
+  const exportToPDF = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/export-pdf", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(resumeData),
+      });
+
+      if (!response.ok) throw new Error("Failed to export PDF");
+
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "resume.pdf";
+      link.click();
+    } catch (err) {
+      console.error("Error exporting PDF:", err);
+    }
+  };
+
+  const makeHTMLPreview = async () => {
+    await fetch("http://localhost:3001/make", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(resumeData),
+    });
+  };
+
+  useEffect(() => {
+    localStorage.setItem("resumeJson", JSON.stringify(resumeData));
+  }, [resumeData]);
 
   return {
     resumeData,
@@ -151,6 +195,8 @@ export function useResumeData() {
     updateLanguages,
     updateReferences,
     exportToJSON,
-    loadSavedData
+    exportToPDF,
+    makeHTMLPreview,
+    loadSavedData,
   };
 }
