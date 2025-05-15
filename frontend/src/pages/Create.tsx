@@ -26,7 +26,7 @@ export default function Create() {
     phone: "",
     url: "",
     summary: "",
-    image: "", // ← this is the missing field
+    image: "",
     location: {
       address: "",
       postalCode: "",

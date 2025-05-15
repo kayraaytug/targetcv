@@ -45,7 +45,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ basics, onChange
   return (
     <section className="space-y-4 p-8">
       <h3 className="text-xl font-medium mt-4">Profile</h3>
-      <div className="border p-4 rounded-md space-y-2">
+      <div className="p-4 space-y-2">
 
         <Input
           type="text"
@@ -85,7 +85,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ basics, onChange
       </div>
 
       <h3 className="text-xl font-medium mt-4">Location</h3>
-      <div className="border p-4 rounded-md space-y-2">
+      <div className="p-4 space-y-2">
         <Input
           type="text"
           placeholder="Address"
