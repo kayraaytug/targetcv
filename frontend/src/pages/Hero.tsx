@@ -2,12 +2,18 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { LoginForm } from "@/components/login-form";
 import { useRef } from "react";
+import { Plus, Upload } from "lucide-react"
+
 
 export default function Hero() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const stored = localStorage.getItem("resumeJson");
 
   const handleCreateNewClick = () => {
+    if (stored) {
+      localStorage.removeItem("resumeJson");
+    }
     navigate("/create");
   };
 
@@ -19,9 +25,12 @@ export default function Hero() {
     const json = JSON.parse(text);
 
     localStorage.setItem("resumeJson", JSON.stringify(json));
-
     navigate("/create");
   };
+
+  const handleContinue = () => {
+    navigate("/create");
+  }
 
   return (
     <>
@@ -46,9 +55,9 @@ export default function Hero() {
               </div>
 
               {/* Buttons */}
-              <div className="mt-8 flex gap-3">
+              <div className="mt-8 flex gap-3 pb-4">
                 <Button size="lg" onClick={handleCreateNewClick}>
-                  Create New
+                  <Plus />Create New
                 </Button>
                 <>
                   <input
@@ -63,10 +72,13 @@ export default function Hero() {
                     onClick={() => fileInputRef.current?.click()}
                     variant="outline"
                   >
-                    Upload JSON
+                    <Upload />Upload JSON
                   </Button>
                 </>
+                
               </div>
+              {stored ? <Button size="lg" onClick={handleContinue}>Continue last session</Button> : <div></div>}
+
             </div>
 
             {/* LoginForm aligned right */}

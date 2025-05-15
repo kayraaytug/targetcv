@@ -134,9 +134,7 @@ export function useResumeData() {
       if (json.references) newData.references = json.references;
 
       setResumeData(newData);
-      
-      // Clear it after use to avoid re-importing on every visit
-      localStorage.removeItem("resumeJson");
+
     } catch (error) {
       console.error("Error loading saved resume data:", error);
     }
