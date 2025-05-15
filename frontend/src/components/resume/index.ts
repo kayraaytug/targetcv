@@ -1,0 +1,8 @@
+export { ProfileSection } from "./ProfileSection"
+export { WorkSection } from "./WorkSection"
+export { EducationSection } from "./EducationSection"
+export { AwardsSection } from "./AwardsSection"
+export { SkillsSection } from "./SkillsSection"
+export { ProjectsSection } from "./ProjectsSection"
+export { LanguagesSection } from "./LanguagesSection"
+export { ReferencesSection } from "./ReferencesSection"
