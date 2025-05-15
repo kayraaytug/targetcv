@@ -1,8 +1,8 @@
-export type SectionId = 
-  | "profile" 
-  | "work" 
-  | "education" 
-  | "awards" 
+export type SectionId =
+  | "profile"
+  | "work"
+  | "education"
+  | "awards"
   | "skills"
   | "projects"
   | "languages"
@@ -34,6 +34,70 @@ export interface Basics {
   profiles: Profile[];
 }
 
+export interface Work {
+  name: string;
+  position: string;
+  url: string;
+  startDate: string;
+  endDate: string;
+  summary: string;
+  highlights: string[];
+}
+
+export interface Education {
+  institution: string;
+  url: string;
+  area: string;
+  studyType: string;
+  startDate: string;
+  endDate: string;
+  score: string;
+  courses: string[];
+}
+
+export interface Award {
+  title: string;
+  date: string;
+  awarder: string;
+  summary: string;
+}
+
+export interface Skill {
+  name: string;
+  level: string;
+  keywords: string[];
+}
+
+export interface Project {
+  name: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+  highlights: string[];
+  url: string;
+}
+
+export interface Language {
+  language: string;
+  fluency: string;
+}
+
+export interface Reference {
+  name: string;
+  reference: string;
+}
+
+export interface ResumeData {
+  basics: Basics;
+  work: Work[];
+  education: Education[];
+  awards: Award[];
+  skills: Skill[];
+  projects: Project[];
+  languages: Language[];
+  references: Reference[];
+}
+
 export const defaultBasics: Basics = {
   name: "John Doe",
   label: "Programmer",
@@ -58,16 +122,6 @@ export const defaultBasics: Basics = {
   ],
 };
 
-export interface Work {
-  name: string;
-  position: string;
-  url: string;
-  startDate: string;
-  endDate: string;
-  summary: string;
-  highlights: string[];
-}
-
 export const defaultWork: Work[] = [
   {
     name: "Company",
@@ -80,68 +134,19 @@ export const defaultWork: Work[] = [
   },
 ];
 
-export interface Education {
-  institution: string;
-  url: string;
-  area: string;
-  studyType: string;
-  startDate: string;
-  endDate: string;
-  score: string;
-  courses: string[];
-}
-
-export const defaultEducation: Education[] = [
+export const defaultReferences: Reference[] = [
   {
-    institution: "University",
-    url: "https://institution.com/",
-    area: "Software Development",
-    studyType: "Bachelor",
-    startDate: "2011-01-01",
-    endDate: "2013-01-01",
-    score: "4.0",
-    courses: ["DB1101 - Basic SQL"],
+    name: "Jane Doe",
+    reference: "Reference…",
   },
 ];
 
-export interface Award {
-  title: string;
-  date: string;
-  awarder: string;
-  summary: string;
-}
-
-export const defaultAwards: Award[] = [
+export const defaultLanguages: Language[] = [
   {
-    title: "Award",
-    date: "2014-11-01",
-    awarder: "Company",
-    summary: "There is no spoon.",
+    language: "English",
+    fluency: "Native speaker",
   },
 ];
-
-export interface Skill {
-  name: string;
-  level: string;
-  keywords: string[];
-}
-
-export const defaultSkills: Skill[] = [
-  {
-    name: "Web Development",
-    level: "Master",
-    keywords: ["HTML", "CSS", "JavaScript"],
-  },
-];
-
-export interface Project {
-  name: string;
-  startDate: string;
-  endDate: string;
-  description: string;
-  highlights: string[];
-  url: string;
-}
 
 export const defaultProjects: Project[] = [
   {
@@ -154,26 +159,32 @@ export const defaultProjects: Project[] = [
   },
 ];
 
-export interface Language {
-  language: string;
-  fluency: string;
-}
-
-export const defaultLanguages: Language[] = [
+export const defaultSkills: Skill[] = [
   {
-    language: "English",
-    fluency: "Native speaker",
+    name: "Web Development",
+    level: "Master",
+    keywords: ["HTML", "CSS", "JavaScript"],
   },
 ];
 
-export interface Reference {
-  name: string;
-  reference: string;
-}
-
-export const defaultReferences: Reference[] = [
+export const defaultAwards: Award[] = [
   {
-    name: "Jane Doe",
-    reference: "Reference…",
+    title: "Award",
+    date: "2014-11-01",
+    awarder: "Company",
+    summary: "There is no spoon.",
+  },
+];
+
+export const defaultEducation: Education[] = [
+  {
+    institution: "University",
+    url: "https://institution.com/",
+    area: "Software Development",
+    studyType: "Bachelor",
+    startDate: "2011-01-01",
+    endDate: "2013-01-01",
+    score: "4.0",
+    courses: ["DB1101 - Basic SQL"],
   },
 ];

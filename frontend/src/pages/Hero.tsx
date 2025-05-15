@@ -1,15 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { LoginForm } from "@/components/login-form";
+import { useRef } from "react";
 
 export default function Hero() {
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCreateNewClick = () => {
     navigate("/create");
   };
 
-  const handelImportJSONClick = () => {
+  const handelImportJSONClick = async () => {
+    const file = fileInputRef.current?.files?.[0];
+    if (!file) return;
+
+    const text = await file.text();
+    const json = JSON.parse(text);
+
+    localStorage.setItem("resumeJson", JSON.stringify(json));
+
     navigate("/create");
   };
 
@@ -27,7 +37,8 @@ export default function Hero() {
 
               <div className="mt-5 max-w-xl">
                 <p className="text-muted-foreground text-xl">
-                  Tired of sending out countless job applications with no response?
+                  Tired of sending out countless job applications with no
+                  response?
                 </p>
                 <p className="text-muted-foreground text-xl">
                   TargetCV is here with the AI powered CV matcher!
@@ -39,9 +50,22 @@ export default function Hero() {
                 <Button size="lg" onClick={handleCreateNewClick}>
                   Create New
                 </Button>
-                <Button size="lg" onClick={handelImportJSONClick} variant="outline">
-                  Upload JSON
-                </Button>
+                <>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="application/json"
+                    className="hidden"
+                    onChange={handelImportJSONClick}
+                  />
+                  <Button
+                    size="lg"
+                    onClick={() => fileInputRef.current?.click()}
+                    variant="outline"
+                  >
+                    Upload JSON
+                  </Button>
+                </>
               </div>
             </div>
 
