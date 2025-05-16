@@ -33,7 +33,7 @@ async def export_pdf(request: Request):
             json.dump(data, f, indent=2)
 
         subprocess.run(
-            [resumed_path, "export", "--theme", "jsonresume-theme-even"],
+            [resumed_path+".cmd", "export", "--theme", "jsonresume-theme-even"],
             cwd=BASE_DIR,
             check=True,
         )
@@ -51,27 +51,54 @@ async def export_pdf(request: Request):
 @app.post("/make")
 async def make_html(request: Request):
     try:
+        # 1. Get JSON data from request
         data = await request.json()
 
+        # 2. Write data to resume.json
         with open(RESUME_JSON, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)
-            print(data)
 
+        # 3. Generate HTML via resumed
         subprocess.run(
-            [resumed_path, "render", "--theme", "jsonresume-theme-even"],
+            [resumed_path+".cmd", "render", "--theme", "jsonresume-theme-even"],
             cwd=BASE_DIR,
             check=True,
         )
 
-        # Copy resume.html to Vite's public folder
-        if not os.path.exists(PUBLIC_DIR):
-            os.makedirs(PUBLIC_DIR)
+        # 4. Read and return the HTML content directly
+        with open(RESUME_HTML, "r", encoding="utf-8") as f:
+            html_content = f.read()
 
-        with open(RESUME_HTML, "r", encoding="utf-8") as src:
-            with open(os.path.join(PUBLIC_DIR, "resume.html"), "w", encoding="utf-8") as dest:
-                dest.write(src.read())
+        return Response(content=html_content, media_type="text/html")
 
-        return {"message": "HTML rendered successfully"}
     except Exception as e:
         print("Error rendering HTML:", e)
         return JSONResponse(status_code=500, content={"error": "HTML rendering failed"})
+
+# @app.post("/make")
+# async def make_html(request: Request):
+#     try:
+#         data = await request.json()
+
+#         with open(RESUME_JSON, "w", encoding="utf-8") as f:
+#             json.dump(data, f, indent=2)
+#             print(data)
+
+#         subprocess.run(
+#             [resumed_path, "render", "--theme", "jsonresume-theme-even"],
+#             cwd=BASE_DIR,
+#             check=True,
+#         )
+
+#         # Copy resume.html to Vite's public folder
+#         if not os.path.exists(PUBLIC_DIR):
+#             os.makedirs(PUBLIC_DIR)
+
+#         with open(RESUME_HTML, "r", encoding="utf-8") as src:
+#             with open(os.path.join(PUBLIC_DIR, "resume.html"), "w", encoding="utf-8") as dest:
+#                 dest.write(src.read())
+
+#         return {"message": "HTML rendered successfully"}
+#     except Exception as e:
+#         print("Error rendering HTML:", e)
+#         return JSONResponse(status_code=500, content={"error": "HTML rendering failed"})

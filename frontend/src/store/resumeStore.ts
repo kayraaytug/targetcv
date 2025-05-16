@@ -1,17 +1,20 @@
 // src/store/resumeStore.ts
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
-import { ResumeData } from '@/types'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { ResumeData } from "@/types";
 
 interface ResumeStore {
-  data: ResumeData
-  resetData: () => void
-  updateSection: <K extends keyof ResumeData>(section: K, value: ResumeData[K]) => void
-  updateBasics: (basics: ResumeData['basics']) => void
-  exportToJSON: () => void
-  exportToPDF: () => Promise<void>
-  makeHTMLPreview: () => Promise<void>
-  isResumeStored: () => boolean; // <-- Add this
+  data: ResumeData;
+  resetData: () => void;
+  updateSection: <K extends keyof ResumeData>(
+    section: K,
+    value: ResumeData[K]
+  ) => void;
+  updateBasics: (basics: ResumeData["basics"]) => void;
+  exportToJSON: () => void;
+  exportToPDF: () => Promise<void>;
+  makeHTMLPreview: () => Promise<string | null>;
+  isResumeStored: () => boolean;
 }
 
 const initialResumeData: ResumeData = {
@@ -42,37 +45,37 @@ const initialResumeData: ResumeData = {
   interests: [],
   volunteer: [],
   publications: [],
-  certificates: []
-}
+  certificates: [],
+};
 
 export const useResumeStore = create<ResumeStore>()(
   persist(
     (set, get) => ({
       data: initialResumeData,
       resetData: () => set({ data: initialResumeData }),
-      updateSection: (section, value) => 
-        set((state) => ({ 
-          data: { ...state.data, [section]: value } 
+      updateSection: (section, value) =>
+        set((state) => ({
+          data: { ...state.data, [section]: value },
         })),
-      updateBasics: (basics) => 
-        set((state) => ({ 
-          data: { ...state.data, basics } 
+      updateBasics: (basics) =>
+        set((state) => ({
+          data: { ...state.data, basics },
         })),
       exportToJSON: () => {
-        const { data } = get()
-        const jsonString = JSON.stringify(data, null, 2)
-        const blob = new Blob([jsonString], { type: 'application/json' })
-        const url = URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = url
-        link.download = 'resume.json'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        URL.revokeObjectURL(url)
+        const { data } = get();
+        const jsonString = JSON.stringify(data, null, 2);
+        const blob = new Blob([jsonString], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "resume.json";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
       },
       exportToPDF: async () => {
-        const { data } = get()
+        const { data } = get();
         try {
           const response = await fetch("http://localhost:8000/export-pdf", {
             method: "POST",
@@ -99,7 +102,7 @@ export const useResumeStore = create<ResumeStore>()(
         return JSON.stringify(data) !== JSON.stringify(initialResumeData);
       },
       makeHTMLPreview: async () => {
-        const { data } = get()
+        const { data } = get();
         try {
           const response = await fetch("http://localhost:8000/make", {
             method: "POST",
@@ -108,16 +111,20 @@ export const useResumeStore = create<ResumeStore>()(
             },
             body: JSON.stringify(data),
           });
-          
+
           if (!response.ok) throw new Error("Failed to generate preview");
+
+          const html = await response.text();
+          return html;
         } catch (err) {
           console.error("Error generating preview:", err);
+          return null;
         }
-      }
+      },
     }),
-    
+
     {
-      name: 'resume-storage'
+      name: "resume-storage",
     }
   )
-)
+);
