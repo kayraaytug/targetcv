@@ -1,43 +1,40 @@
-import React from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { Work } from "@/types"
+import { useResumeStore } from '@/store/resumeStore'
 
-type WorkSectionProps = {
-    work: Work[]
-    onChange: (updated: Work[]) => void
-}
-
-export const WorkSection: React.FC<WorkSectionProps> = ({ work, onChange }) => {
+export function WorkSection() {
+    const { data, updateSection } = useResumeStore()
+    
     const handleChange = (index: number, field: keyof Work, value: string) => {
-        const updated = [...work]
+        const updated = [...data.work]
         updated[index] = { ...updated[index], [field]: value }
-        onChange(updated)
+        updateSection('work', updated)
     }
 
     const handleHighlightChange = (index: number, hIndex: number, value: string) => {
-        const updated = [...work]
+        const updated = [...data.work]
         updated[index].highlights[hIndex] = value
-        onChange(updated)
+        updateSection('work', updated)
     }
 
     return (
         <section className="space-y-4 p-8">
-            <h3 className="text-xl font-medium mt-4">Work</h3>
-            {work.map((item, i) => (
+            <h3 className="text-xl font-medium mt-4">Work Experience</h3>
+            {data.work.map((item, i) => (
                 <div key={i} className="border p-4 rounded-md space-y-2">
-                    <div key={i} className="flex justify-between items-center">
-                    <h4 className="text-lg font-medium">{item.name || "Company"}</h4>
-                    <Button
+                    <div className="flex justify-between items-center">
+                        <h4 className="text-lg font-medium">{item.name || "Company"}</h4>
+                        <Button
                             className="h-6 w-6"
                             variant="destructive"
-                            size={"icon"}
+                            size="icon"
                             onClick={() => {
-                                const updated = [...work]
+                                const updated = [...data.work]
                                 updated.splice(i, 1)
-                                onChange(updated)
+                                updateSection('work', updated)
                             }}
                         >
                             <X/>
@@ -60,39 +57,36 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ work, onChange }) => {
                             <Button
                                 className="h-6 w-6"
                                 variant="destructive"
-                                size={"icon"}
+                                size="icon"
                                 onClick={() => {
-                                    const updated = [...work]
+                                    const updated = [...data.work]
                                     updated[i].highlights.splice(j, 1)
-                                    onChange(updated)
+                                    updateSection('work', updated)
                                 }}
                             >
                                 <X />
                             </Button>
                         </div>
-
                     ))}
                     <Button
-                        size={"sm"}
+                        size="sm"
                         variant="outline"
                         onClick={() => {
-                            const updated = [...work]
+                            const updated = [...data.work]
                             updated[i].highlights.push("")
-                            onChange(updated)
+                            updateSection('work', updated)
                         }}
                     >
-                        + Add
+                        + Add Highlight
                     </Button>
                 </div>
             ))}
             <Button
-                size={"lg"}
-                onClick={() =>
-                    onChange([
-                        ...work,
-                        { name: "", position: "", url: "", startDate: "", endDate: "", summary: "", highlights: [] },
-                    ])
-                }
+                size="lg"
+                onClick={() => updateSection('work', [
+                    ...data.work,
+                    { name: '', position: '', url: '', startDate: '', endDate: '', summary: '', highlights: [] }
+                ])}
             >
                 + Add Work
             </Button>

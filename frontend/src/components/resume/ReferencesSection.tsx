@@ -1,26 +1,23 @@
-import React from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { Reference } from "@/types"
+import { useResumeStore } from "@/store/resumeStore"
 
-type ReferencesSectionProps = {
-  references: Reference[]
-  onChange: (updated: Reference[]) => void
-}
-
-export const ReferencesSection: React.FC<ReferencesSectionProps> = ({ references, onChange }) => {
+export function ReferencesSection() {
+  const { data, updateSection } = useResumeStore()
+  
   const handleChange = (index: number, field: keyof Reference, value: string) => {
-    const updated = [...references]
+    const updated = [...data.references]
     updated[index] = { ...updated[index], [field]: value }
-    onChange(updated)
+    updateSection('references', updated)
   }
 
   return (
     <section className="space-y-4 p-8">
       <h3 className="text-xl font-medium mt-4">References</h3>
-      {references.map((item, i) => (
+      {data.references.map((item, i) => (
         <div key={i} className="border p-4 rounded-md space-y-2">
           <div className="flex justify-between items-center">
             <h4 className="text-lg font-medium">{item.name || ">"}</h4>
@@ -29,9 +26,9 @@ export const ReferencesSection: React.FC<ReferencesSectionProps> = ({ references
               variant="destructive"
               size="icon"
               onClick={() => {
-                const updated = [...references]
+                const updated = [...data.references]
                 updated.splice(i, 1)
-                onChange(updated)
+                updateSection('references', updated)
               }}
             >
               <X />
@@ -44,8 +41,8 @@ export const ReferencesSection: React.FC<ReferencesSectionProps> = ({ references
       <Button
         size="lg"
         onClick={() =>
-          onChange([
-            ...references,
+          updateSection('references', [
+            ...data.references,
             { name: "", reference: "" },
           ])
         }

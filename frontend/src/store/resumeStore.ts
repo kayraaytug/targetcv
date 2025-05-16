@@ -1,0 +1,111 @@
+// src/store/resumeStore.ts
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { ResumeData } from '@/types'
+
+interface ResumeStore {
+  data: ResumeData
+  updateSection: <K extends keyof ResumeData>(section: K, value: ResumeData[K]) => void
+  updateBasics: (basics: ResumeData['basics']) => void
+  exportToJSON: () => void
+  exportToPDF: () => Promise<void>
+  makeHTMLPreview: () => Promise<void>
+}
+
+const initialResumeData: ResumeData = {
+  basics: {
+    name: "",
+    label: "",
+    email: "",
+    phone: "",
+    url: "",
+    summary: "",
+    image: "",
+    location: {
+      address: "",
+      postalCode: "",
+      city: "",
+      countryCode: "",
+      region: "",
+    },
+    profiles: [],
+  },
+  work: [],
+  education: [],
+  awards: [],
+  skills: [],
+  projects: [],
+  languages: [],
+  references: [],
+}
+
+export const useResumeStore = create<ResumeStore>()(
+  persist(
+    (set, get) => ({
+      data: initialResumeData,
+      updateSection: (section, value) => 
+        set((state) => ({ 
+          data: { ...state.data, [section]: value } 
+        })),
+      updateBasics: (basics) => 
+        set((state) => ({ 
+          data: { ...state.data, basics } 
+        })),
+      exportToJSON: () => {
+        const { data } = get()
+        const jsonString = JSON.stringify(data, null, 2)
+        const blob = new Blob([jsonString], { type: 'application/json' })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'resume.json'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
+      },
+      exportToPDF: async () => {
+        const { data } = get()
+        try {
+          const response = await fetch("http://localhost:8000/export-pdf", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          if (!response.ok) throw new Error("Failed to export PDF");
+
+          const blob = await response.blob();
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "resume.pdf";
+          link.click();
+          URL.revokeObjectURL(link.href);
+        } catch (err) {
+          console.error("Error exporting PDF:", err);
+        }
+      },
+      makeHTMLPreview: async () => {
+        const { data } = get()
+        try {
+          const response = await fetch("http://localhost:8000/make", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+          
+          if (!response.ok) throw new Error("Failed to generate preview");
+        } catch (err) {
+          console.error("Error generating preview:", err);
+        }
+      }
+    }),
+    {
+      name: 'resume-storage'
+    }
+  )
+)

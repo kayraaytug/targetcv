@@ -1,32 +1,29 @@
-import React from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { Project } from "@/types"
+import { useResumeStore } from "@/store/resumeStore"
 
-type ProjectsSectionProps = {
-  projects: Project[]
-  onChange: (updated: Project[]) => void
-}
-
-export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, onChange }) => {
+export function ProjectsSection() {
+  const { data, updateSection } = useResumeStore()
+  
   const handleChange = (index: number, field: keyof Project, value: string) => {
-    const updated = [...projects]
+    const updated = [...data.projects]
     updated[index] = { ...updated[index], [field]: value }
-    onChange(updated)
+    updateSection('projects', updated)
   }
 
   const handleHighlightChange = (index: number, hIndex: number, value: string) => {
-    const updated = [...projects]
+    const updated = [...data.projects]
     updated[index].highlights[hIndex] = value
-    onChange(updated)
+    updateSection('projects', updated)
   }
 
   return (
     <section className="space-y-4 p-8">
       <h3 className="text-xl font-medium mt-4">Projects</h3>
-      {projects.map((item, i) => (
+      {data.projects.map((item, i) => (
         <div key={i} className="border p-4 rounded-md space-y-2">
           <div className="flex justify-between items-center">
             <h4 className="text-lg font-medium">{item.name || ">"}</h4>
@@ -35,9 +32,9 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, onCh
               variant="destructive"
               size="icon"
               onClick={() => {
-                const updated = [...projects]
+                const updated = [...data.projects]
                 updated.splice(i, 1)
-                onChange(updated)
+                updateSection('projects', updated)
               }}
             >
               <X />
@@ -61,9 +58,9 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, onCh
                 variant="destructive"
                 size="icon"
                 onClick={() => {
-                  const updated = [...projects]
+                  const updated = [...data.projects]
                   updated[i].highlights.splice(j, 1)
-                  onChange(updated)
+                  updateSection('projects', updated)
                 }}
               >
                 <X />
@@ -74,9 +71,9 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, onCh
             size="sm"
             variant="outline"
             onClick={() => {
-              const updated = [...projects]
+              const updated = [...data.projects]
               updated[i].highlights.push("")
-              onChange(updated)
+              updateSection('projects', updated)
             }}
           >
             + Add Highlight
@@ -86,8 +83,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, onCh
       <Button
         size="lg"
         onClick={() =>
-          onChange([
-            ...projects,
+          updateSection('projects', [
+            ...data.projects,
             {
               name: "",
               startDate: "",

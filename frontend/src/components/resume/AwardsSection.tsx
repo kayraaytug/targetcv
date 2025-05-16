@@ -1,26 +1,23 @@
-import React from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { Award } from "@/types"
+import { useResumeStore } from "@/store/resumeStore"
 
-type AwardsSectionProps = {
-  awards: Award[]
-  onChange: (updated: Award[]) => void
-}
-
-export const AwardsSection: React.FC<AwardsSectionProps> = ({ awards, onChange }) => {
+export function AwardsSection() {
+  const { data, updateSection } = useResumeStore()
+  
   const handleChange = (index: number, field: keyof Award, value: string) => {
-    const updated = [...awards]
+    const updated = [...data.awards]
     updated[index] = { ...updated[index], [field]: value }
-    onChange(updated)
+    updateSection('awards', updated)
   }
 
   return (
     <section className="space-y-4 p-8">
       <h3 className="text-xl font-medium mt-4">Awards</h3>
-      {awards.map((item, i) => (
+      {data.awards.map((item, i) => (
         <div key={i} className="border p-4 rounded-md space-y-2">
           <div className="flex justify-between items-center">
             <h4 className="text-lg font-medium">{item.title || ">"}</h4>
@@ -29,9 +26,9 @@ export const AwardsSection: React.FC<AwardsSectionProps> = ({ awards, onChange }
               variant="destructive"
               size="icon"
               onClick={() => {
-                const updated = [...awards]
+                const updated = [...data.awards]
                 updated.splice(i, 1)
-                onChange(updated)
+                updateSection('awards', updated)
               }}
             >
               <X />
@@ -46,8 +43,8 @@ export const AwardsSection: React.FC<AwardsSectionProps> = ({ awards, onChange }
       <Button
         size="lg"
         onClick={() =>
-          onChange([
-            ...awards,
+          updateSection('awards', [
+            ...data.awards,
             {
               title: "",
               date: "",
