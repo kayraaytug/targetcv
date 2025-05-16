@@ -17,11 +17,11 @@ app.add_middleware(
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-resumed_path = os.path.join(BASE_DIR, "node_modules", ".bin", "resumed.cmd")
+resumed_path = os.path.join(BASE_DIR, "node_modules", ".bin", "resumed")
 RESUME_JSON = os.path.join(BASE_DIR, "resume.json")
 RESUME_PDF = os.path.join(BASE_DIR, "resume.pdf")
 RESUME_HTML = os.path.join(BASE_DIR, "resume.html")
-PUBLIC_DIR = os.path.join(BASE_DIR, "../frontend/public")  # Vite public folder
+PUBLIC_DIR = os.path.join(BASE_DIR, "../frontend/public")
 
 
 @app.post("/export-pdf")

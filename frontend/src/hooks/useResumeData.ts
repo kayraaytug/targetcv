@@ -150,7 +150,7 @@ export function useResumeData() {
 
   const exportToPDF = async () => {
     try {
-      const response = await fetch("http://localhost:3001/export-pdf", {
+      const response = await fetch("http://localhost:8000/export-pdf", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -171,7 +171,7 @@ export function useResumeData() {
   };
 
   const makeHTMLPreview = async () => {
-    await fetch("http://localhost:3001/make", {
+    await fetch("http://localhost:8000/make", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

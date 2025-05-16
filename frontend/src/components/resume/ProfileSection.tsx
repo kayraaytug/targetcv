@@ -3,21 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
-import { Basics } from "@/types"
-
-type ProfileLocation = {
-  address: string
-  postalCode: string
-  city: string
-  countryCode: string
-  region: string
-}
-
-type SocialProfile = {
-  network: string
-  username: string
-  url: string
-}
+import { Basics, ProfileLocation, SocialProfile } from "@/types"
 
 type ProfileSectionProps = {
   basics: Basics
