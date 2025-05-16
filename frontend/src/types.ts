@@ -101,13 +101,49 @@ export type SocialProfile = {
   url: string
 }
 
+export interface Volunteer {
+  organization: string;
+  position: string;
+  url: string;
+  startDate: string;
+  endDate: string;
+  summary: string;
+  highlights: string[];
+}
+
+export interface Certificate {
+  name: string;
+  date: string;
+  issuer: string;
+  url: string;
+}
+
+export interface Publication {
+  name: string;
+  publisher: string;
+  releaseDate: string;
+  url: string;
+  summary: string;
+}
+
+export interface Interest {
+  name: string;
+  keywords: string[];
+}
+
+
 export interface ResumeData {
   basics: Basics;
   work: Work[];
+  volunteer: Volunteer[];
   education: Education[];
   awards: Award[];
+  certificates: Certificate[];
+  publications: Publication[];
   skills: Skill[];
-  projects: Project[];
   languages: Language[];
+  interests: Interest[];
   references: Reference[];
+  projects: Project[];
 }
+

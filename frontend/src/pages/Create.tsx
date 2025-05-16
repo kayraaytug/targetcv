@@ -16,6 +16,7 @@ export default function Create() {
   const makeHTMLPreview = useResumeStore(useCallback(state => state.makeHTMLPreview, []));
 
   return (
+    
     <SidebarProvider>
       <div className="flex h-screen w-full">
         <AppSidebar

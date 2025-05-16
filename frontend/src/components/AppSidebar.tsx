@@ -3,14 +3,18 @@ import { Calendar, Inbox, User, Settings } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+
 import { SectionId } from "@/types"
+import { useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
+import { NavUser } from "./sidebar/nav-user";
 
 interface SidebarItem {
   title: string;
@@ -68,26 +72,43 @@ const items: SidebarItem[] = [
 ];
 
 export function AppSidebar({ activeSection, setActiveSection }: AppSidebarProps) {
+  const [user, setUser] = useState<FirebaseUser | null>(null);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+    });
+
+    return () => unsubscribe(); // clean up listener on unmount
+  }, []);
+
+  const userdata = {
+    name: user?.displayName || "M. Doe",
+    username: user?.email?.split("@")[0] || "mdoe",
+    email: user?.email || "",
+    avatar: user?.photoURL || "/avatars/shadcn.jpg",
+  };
+
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xl m-auto">TargetCV</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton 
+                  <SidebarMenuButton
                     asChild
                     className={activeSection === item.id ? "bg-accent" : ""}
                   >
-                    <button 
+                    <SidebarMenuButton
                       onClick={() => setActiveSection(item.id)}
                       className="flex items-center gap-2 w-full"
                     >
                       <item.icon />
                       <span>{item.title}</span>
-                    </button>
+                    </SidebarMenuButton>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -95,6 +116,9 @@ export function AppSidebar({ activeSection, setActiveSection }: AppSidebarProps)
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        {user && <NavUser user={userdata} />}
+      </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

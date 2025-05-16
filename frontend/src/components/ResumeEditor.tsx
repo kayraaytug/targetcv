@@ -1,7 +1,6 @@
 // src/components/resume/ResumeEditor.tsx
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SectionId } from "@/types";
-import { useResumeStore } from "@/store/resumeStore";
 import {
   ProfileSection,
   WorkSection,

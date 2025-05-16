@@ -5,6 +5,9 @@ import { useRef } from "react";
 import { Plus, Upload } from "lucide-react";
 import { useResumeStore } from "@/store/resumeStore";
 import { ResumeData } from "@/types";
+import { useEffect, useState } from "react";
+import { onAuthChange } from "@/hooks/useAuth";
+import { Header } from "@/components/Header";
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -12,61 +15,21 @@ export default function Hero() {
   const resumeData = useResumeStore((state) => state.data);
   const updateSection = useResumeStore((state) => state.updateSection);
   const updateBasics = useResumeStore((state) => state.updateBasics);
+  const [user, setUser] = useState<any>(null);
 
-  const isResumeStored = JSON.stringify(resumeData) !== JSON.stringify({
-    basics: {
-      name: "",
-      label: "",
-      email: "",
-      phone: "",
-      url: "",
-      summary: "",
-      image: "",
-      location: {
-        address: "",
-        postalCode: "",
-        city: "",
-        countryCode: "",
-        region: "",
-      },
-      profiles: [],
-    },
-    work: [],
-    education: [],
-    awards: [],
-    skills: [],
-    projects: [],
-    languages: [],
-    references: [],
-  });
+  useEffect(() => {
+    const unsubscribe = onAuthChange((firebaseUser) => {
+      setUser(firebaseUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const resetData = useResumeStore((state) => state.resetData);
+  const isResumeStored = useResumeStore((state) => state.isResumeStored());
 
   const handleCreateNewClick = () => {
-    // Resetting state
-    updateBasics({
-      name: "",
-      label: "",
-      email: "",
-      phone: "",
-      url: "",
-      summary: "",
-      image: "",
-      location: {
-        address: "",
-        postalCode: "",
-        city: "",
-        countryCode: "",
-        region: "",
-      },
-      profiles: [],
-    });
-    updateSection("work", []);
-    updateSection("education", []);
-    updateSection("awards", []);
-    updateSection("skills", []);
-    updateSection("projects", []);
-    updateSection("languages", []);
-    updateSection("references", []);
-
+    resetData(); // ✅ Reset entire resume state
     navigate("/create");
   };
 
@@ -94,7 +57,9 @@ export default function Hero() {
   }
 
   return (
+    
     <div>
+      <Header />
       <div className="container mx-auto px-4 py-24 md:px-6 lg:py-32 2xl:max-w-[1400px]">
         <div className="flex flex-col lg:flex-row items-center justify-between">
           <div className="flex-1 text-center lg:text-left flex flex-col items-center lg:items-start justify-center">
@@ -139,9 +104,11 @@ export default function Hero() {
             )}
           </div>
 
-          <div className="mt-12 lg:mt-0 lg:ml-12">
-            <LoginForm />
-          </div>
+          {!user && (
+            <div className="mt-12 lg:mt-0 lg:ml-12">
+              <LoginForm />
+            </div>
+          )}
         </div>
       </div>
     </div>

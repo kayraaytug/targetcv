@@ -5,11 +5,13 @@ import { ResumeData } from '@/types'
 
 interface ResumeStore {
   data: ResumeData
+  resetData: () => void
   updateSection: <K extends keyof ResumeData>(section: K, value: ResumeData[K]) => void
   updateBasics: (basics: ResumeData['basics']) => void
   exportToJSON: () => void
   exportToPDF: () => Promise<void>
   makeHTMLPreview: () => Promise<void>
+  isResumeStored: () => boolean; // <-- Add this
 }
 
 const initialResumeData: ResumeData = {
@@ -37,12 +39,17 @@ const initialResumeData: ResumeData = {
   projects: [],
   languages: [],
   references: [],
+  interests: [],
+  volunteer: [],
+  publications: [],
+  certificates: []
 }
 
 export const useResumeStore = create<ResumeStore>()(
   persist(
     (set, get) => ({
       data: initialResumeData,
+      resetData: () => set({ data: initialResumeData }),
       updateSection: (section, value) => 
         set((state) => ({ 
           data: { ...state.data, [section]: value } 
@@ -87,6 +94,10 @@ export const useResumeStore = create<ResumeStore>()(
           console.error("Error exporting PDF:", err);
         }
       },
+      isResumeStored: () => {
+        const { data } = get();
+        return JSON.stringify(data) !== JSON.stringify(initialResumeData);
+      },
       makeHTMLPreview: async () => {
         const { data } = get()
         try {
@@ -104,6 +115,7 @@ export const useResumeStore = create<ResumeStore>()(
         }
       }
     }),
+    
     {
       name: 'resume-storage'
     }

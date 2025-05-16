@@ -55,6 +55,7 @@ async def make_html(request: Request):
 
         with open(RESUME_JSON, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)
+            print(data)
 
         subprocess.run(
             [resumed_path, "render", "--theme", "jsonresume-theme-even"],
