@@ -7,7 +7,7 @@ import { useResumeStore } from "@/store/resumeStore";
 import { ResumeData } from "@/types";
 import { useEffect, useState } from "react";
 import { onAuthChange } from "@/hooks/useAuth";
-import { Header } from "@/components/Header";
+import Layout from "@/components/Layout";
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -57,10 +57,9 @@ export default function Hero() {
   }
 
   return (
-    
-    <div>
-      <Header />
-      <div className="container mx-auto px-4 py-24 md:px-6 lg:py-32 2xl:max-w-[1400px]">
+
+    <Layout>
+      <div className="container mx-auto px-4 py-12 md:px-6 2xl:max-w-[1400px] lg:min-h-screen lg:flex lg:items-center lg:justify-center">
         <div className="flex flex-col lg:flex-row items-center justify-between">
           <div className="flex-1 text-center lg:text-left flex flex-col items-center lg:items-start justify-center">
             <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
@@ -111,6 +110,6 @@ export default function Hero() {
           )}
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

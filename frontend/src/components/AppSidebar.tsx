@@ -6,6 +6,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -92,6 +93,11 @@ export function AppSidebar({ activeSection, setActiveSection }: AppSidebarProps)
 
   return (
     <Sidebar>
+      <SidebarHeader className="flex items-center justify-between">
+        <a href="/" className="text-xl font-bold tracking-tight">
+          TargetCV
+        </a>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
