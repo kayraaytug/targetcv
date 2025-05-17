@@ -18,6 +18,7 @@ interface ResumeStore {
 }
 
 const initialResumeData: ResumeData = {
+  template: "jsonresume-theme-even",
   basics: {
     name: "",
     label: "",

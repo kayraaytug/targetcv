@@ -1,3 +1,4 @@
+export { TemplateSection } from "./TemplateSection"
 export { ProfileSection } from "./ProfileSection"
 export { WorkSection } from "./WorkSection"
 export { EducationSection } from "./EducationSection"

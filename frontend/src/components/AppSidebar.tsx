@@ -31,6 +31,11 @@ interface AppSidebarProps {
 // Menu items.
 const items: SidebarItem[] = [
   {
+    title: "Template",
+    id: "template",
+    icon: User,
+  },
+  {
     title: "Profile",
     id: "profile",
     icon: User,

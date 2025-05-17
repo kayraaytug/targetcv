@@ -3,7 +3,7 @@ import { useResumeStore } from "@/store/resumeStore";
 import { useCallback } from "react";
 import { Button } from "./ui/button";
 import { Download, Play } from "lucide-react";
-import { Loader2 } from "lucide-react"; // Spinner icon
+import { Loader2 } from "lucide-react";
 
 export default function ResumeHTMLPreview() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -17,7 +17,7 @@ export default function ResumeHTMLPreview() {
     const html = await makeHTMLPreview();
     if (html && iframeRef.current?.contentDocument) {
       iframeRef.current.contentDocument.open();
-      iframeRef.current.contentDocument.write(html);
+      iframeRef.current.contentDocument.writeln(html);
       iframeRef.current.contentDocument.close();
     }
     setIsLoading(false);
@@ -64,6 +64,8 @@ export default function ResumeHTMLPreview() {
         ref={iframeRef}
         className="w-full flex-1 border"
         title="HTML Resume Preview"
+        sandbox="allow-same-origin"
+        seamless
       />
     </div>
   );

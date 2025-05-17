@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-RESUMED_CMD = os.path.join(BASE_DIR, "node_modules", ".bin", "resumed.cmd")
+RESUMED_CMD = os.path.join(BASE_DIR, "node_modules", ".bin", "resumed")
 
 @app.post("/export-pdf")
 async def export_pdf(request: Request, background_tasks: BackgroundTasks):
@@ -38,10 +38,10 @@ async def export_pdf(request: Request, background_tasks: BackgroundTasks):
 
         # Copy necessary files to temp dir if needed
         # Here we just need resume.json — resumed will generate other output
-
-        # Run the resumed CLI to generate PDF
+        template = data.get("template", "jsonresume-theme-modern")
+        
         subprocess.run(
-            [RESUMED_CMD, "export", "--theme", "jsonresume-theme-even"],
+            [RESUMED_CMD, "export", "--theme", template],
             cwd=temp_dir,
             check=True
         )
@@ -77,10 +77,12 @@ async def make_html(request: Request, background_tasks: BackgroundTasks):
         # Write JSON to the temp dir
         with open(temp_json, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)
+        
+        template = data.get("template", "jsonresume-theme-modern")
 
         # Generate HTML using resumed
         subprocess.run(
-            [RESUMED_CMD, "render", "--theme", "jsonresume-theme-even"],
+            [RESUMED_CMD, "render", "--theme", template],
             cwd=temp_dir,
             check=True
         )

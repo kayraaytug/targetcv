@@ -1,4 +1,5 @@
 export type SectionId =
+  | "template"
   | "profile"
   | "work"
   | "education"
@@ -7,6 +8,10 @@ export type SectionId =
   | "projects"
   | "languages"
   | "references";
+
+export type Template =
+  | "jsonresume-theme-even"
+  | "jsonresume-theme-stackoverflow"
 
 export interface Profile {
   network: string;
@@ -133,6 +138,7 @@ export interface Interest {
 
 
 export interface ResumeData {
+  template: Template;
   basics: Basics;
   work: Work[];
   volunteer: Volunteer[];
