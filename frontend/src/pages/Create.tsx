@@ -6,7 +6,7 @@ import ResumeHTMLPreview from "@/components/ResumePreview";
 import { SectionId } from "@/types";
 
 export default function Create() {
-  const [activeSection, setActiveSection] = useState<SectionId>("profile");
+  const [activeSection, setActiveSection] = useState<SectionId>("template");
 
   return (
     

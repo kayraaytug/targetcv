@@ -1,5 +1,5 @@
 import { useResumeStore } from "@/store/resumeStore"
-import { Template } from "@/types"
+import { Template, templateList } from "@/types"
 
 type Props = {
   template: Template
@@ -31,10 +31,6 @@ export default function ResumeTemplate({ onClick, selected, template }: Props) {
   );
 }
 
-const templates: Template[] = [
-  "jsonresume-theme-even",
-  "jsonresume-theme-stackoverflow",
-];
 
 export function TemplateSection() {
   const { data, updateSection } = useResumeStore();
@@ -44,15 +40,21 @@ export function TemplateSection() {
   };
 
   return (
-    <section className="space-y-4 p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {templates.map((template) => (
-        <ResumeTemplate
-          key={template}
-          template={template}
-          selected={data.template === template}
-          onClick={() => handleSelectTemplate(template)}
-        />
-      ))}
+    <section className="p-8 space-y-6">
+      <p className="text-sm text-gray-500 italic">
+        Template preview may differ from the actual PDF. I'm working on improving this.
+      </p>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {templateList.map((template) => (
+          <ResumeTemplate
+            key={template}
+            template={template}
+            selected={data.template === template}
+            onClick={() => handleSelectTemplate(template)}
+          />
+        ))}
+      </div>
     </section>
   );
 }

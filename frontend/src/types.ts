@@ -9,9 +9,14 @@ export type SectionId =
   | "languages"
   | "references";
 
-export type Template =
-  | "jsonresume-theme-even"
-  | "jsonresume-theme-stackoverflow"
+  export const templateList = [
+    "jsonresume-theme-even",
+    "jsonresume-theme-bufferbloat",
+    "jsonresume-theme-one",
+  ] as const;
+
+export type Template = (typeof templateList)[number];
+
 
 export interface Profile {
   network: string;
