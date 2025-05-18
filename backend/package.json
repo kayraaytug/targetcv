@@ -1,17 +1,8 @@
 {
   "dependencies": {
     "jsonresume-theme-bufferbloat": "^1.0.2",
-    "jsonresume-theme-classy": "^1.0.9",
-    "jsonresume-theme-engineering-leader": "^1.0.28",
     "jsonresume-theme-even": "^0.23.0",
-    "jsonresume-theme-flat": "^0.3.7",
-    "jsonresume-theme-modern": "^0.0.18",
-    "jsonresume-theme-msresume": "^0.1.0",
     "jsonresume-theme-one": "^0.0.1",
-    "jsonresume-theme-paper": "^0.5.0",
-    "jsonresume-theme-stackoverflow": "^2.1.0",
-    "jsonresume-theme-stackoverflow-ru": "^3.4.1",
-    "jsonresume-theme-straightforward": "^0.2.0",
     "puppeteer": "^24.8.2",
     "resumed": "^5.0.0"
   }
