@@ -78,7 +78,7 @@ export const useResumeStore = create<ResumeStore>()(
       exportToPDF: async () => {
         const { data } = get();
         try {
-          const response = await fetch("http://localhost:8000/export-pdf", {
+          const response = await fetch("https://kayraaytug-targetcv-backend.hf.space/export-pdf", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -105,7 +105,7 @@ export const useResumeStore = create<ResumeStore>()(
       makeHTMLPreview: async () => {
         const { data } = get();
         try {
-          const response = await fetch("http://localhost:8000/make", {
+          const response = await fetch("https://kayraaytug-targetcv-backend.hf.space/make", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
