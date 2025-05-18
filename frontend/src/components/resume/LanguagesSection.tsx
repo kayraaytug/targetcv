@@ -1,25 +1,22 @@
-import React from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { Language } from "@/types"
+import { useResumeStore } from "@/store/resumeStore"
 
-type LanguagesSectionProps = {
-  languages: Language[]
-  onChange: (updated: Language[]) => void
-}
-
-export const LanguagesSection: React.FC<LanguagesSectionProps> = ({ languages, onChange }) => {
+export function LanguagesSection() {
+  const { data, updateSection } = useResumeStore()
+  
   const handleChange = (index: number, field: keyof Language, value: string) => {
-    const updated = [...languages]
+    const updated = [...data.languages]
     updated[index] = { ...updated[index], [field]: value }
-    onChange(updated)
+    updateSection('languages', updated)
   }
 
   return (
     <section className="space-y-4 p-8">
       <h3 className="text-xl font-medium mt-4">Languages</h3>
-      {languages.map((item, i) => (
+      {data.languages.map((item, i) => (
         <div key={i} className="border p-4 rounded-md space-y-2">
           <div className="flex justify-between items-center">
             <h4 className="text-lg font-medium">{item.language || ">"}</h4>
@@ -28,9 +25,9 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({ languages, o
               variant="destructive"
               size="icon"
               onClick={() => {
-                const updated = [...languages]
+                const updated = [...data.languages]
                 updated.splice(i, 1)
-                onChange(updated)
+                updateSection('languages', updated)
               }}
             >
               <X />
@@ -43,8 +40,8 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({ languages, o
       <Button
         size="lg"
         onClick={() =>
-          onChange([
-            ...languages,
+          updateSection('languages', [
+            ...data.languages,
             { language: "", fluency: "" },
           ])
         }

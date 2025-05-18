@@ -1,32 +1,29 @@
-import React from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
-import { Basics, ProfileLocation, SocialProfile } from "@/types"
+import { useResumeStore } from "@/store/resumeStore"
 
-type ProfileSectionProps = {
-  basics: Basics
-  onChange: (updated: Basics) => void
-}
+export function ProfileSection() {
+  const { data, updateBasics } = useResumeStore();
+  const { basics } = data;
 
-export const ProfileSection: React.FC<ProfileSectionProps> = ({ basics, onChange }) => {
-  const handleChange = (field: keyof Basics, value: string) => {
-    onChange({ ...basics, [field]: value })
-  }
+  const handleChange = (field: keyof typeof basics, value: string) => {
+    updateBasics({ ...basics, [field]: value });
+  };
 
-  const handleLocationChange = (field: keyof ProfileLocation, value: string) => {
-    onChange({
+  const handleLocationChange = (field: keyof typeof basics.location, value: string) => {
+    updateBasics({
       ...basics,
       location: { ...basics.location, [field]: value },
-    })
-  }
+    });
+  };
 
-  const handleProfileChange = (index: number, field: keyof SocialProfile, value: string) => {
-    const newProfiles = [...basics.profiles]
-    newProfiles[index] = { ...newProfiles[index], [field]: value }
-    onChange({ ...basics, profiles: newProfiles })
-  }
+  const handleProfileChange = (index: number, field: keyof typeof basics.profiles[0], value: string) => {
+    const newProfiles = [...basics.profiles];
+    newProfiles[index] = { ...newProfiles[index], [field]: value };
+    updateBasics({ ...basics, profiles: newProfiles });
+  };
 
   return (
     <section className="space-y-4 p-8">
@@ -115,7 +112,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ basics, onChange
               onClick={() => {
                 const newProfiles = [...basics.profiles]
                 newProfiles.splice(idx, 1)
-                onChange({ ...basics, profiles: newProfiles })
+                updateBasics({ ...basics, profiles: newProfiles })
               }}
             >
               <X />
@@ -146,7 +143,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ basics, onChange
           size={"sm"}
           onClick={() => {
             const newProfiles = [...basics.profiles, { network: "", username: "", url: "" }]
-            onChange({ ...basics, profiles: newProfiles })
+            updateBasics({ ...basics, profiles: newProfiles })
           }}
         >
           + Add

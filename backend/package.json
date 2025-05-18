@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "jsonresume-theme-bufferbloat": "^1.0.2",
     "jsonresume-theme-even": "^0.23.0",
+    "jsonresume-theme-one": "^0.0.1",
     "puppeteer": "^24.8.2",
     "resumed": "^5.0.0"
   }

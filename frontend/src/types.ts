@@ -1,4 +1,5 @@
 export type SectionId =
+  | "template"
   | "profile"
   | "work"
   | "education"
@@ -7,6 +8,15 @@ export type SectionId =
   | "projects"
   | "languages"
   | "references";
+
+  export const templateList = [
+    "jsonresume-theme-even",
+    "jsonresume-theme-bufferbloat",
+    "jsonresume-theme-one",
+  ] as const;
+
+export type Template = (typeof templateList)[number];
+
 
 export interface Profile {
   network: string;
@@ -101,13 +111,50 @@ export type SocialProfile = {
   url: string
 }
 
+export interface Volunteer {
+  organization: string;
+  position: string;
+  url: string;
+  startDate: string;
+  endDate: string;
+  summary: string;
+  highlights: string[];
+}
+
+export interface Certificate {
+  name: string;
+  date: string;
+  issuer: string;
+  url: string;
+}
+
+export interface Publication {
+  name: string;
+  publisher: string;
+  releaseDate: string;
+  url: string;
+  summary: string;
+}
+
+export interface Interest {
+  name: string;
+  keywords: string[];
+}
+
+
 export interface ResumeData {
+  template: Template;
   basics: Basics;
   work: Work[];
+  volunteer: Volunteer[];
   education: Education[];
   awards: Award[];
+  certificates: Certificate[];
+  publications: Publication[];
   skills: Skill[];
-  projects: Project[];
   languages: Language[];
+  interests: Interest[];
   references: Reference[];
+  projects: Project[];
 }
+

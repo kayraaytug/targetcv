@@ -1,31 +1,28 @@
-import React from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { Education } from "@/types"
+import { useResumeStore } from "@/store/resumeStore"
 
-type EducationSectionProps = {
-  education: Education[]
-  onChange: (updated: Education[]) => void
-}
-
-export const EducationSection: React.FC<EducationSectionProps> = ({ education, onChange }) => {
+export function EducationSection() {
+  const { data, updateSection } = useResumeStore()
+  
   const handleChange = (index: number, field: keyof Education, value: string) => {
-    const updated = [...education]
+    const updated = [...data.education]
     updated[index] = { ...updated[index], [field]: value }
-    onChange(updated)
+    updateSection('education', updated)
   }
 
   const handleCourseChange = (index: number, cIndex: number, value: string) => {
-    const updated = [...education]
+    const updated = [...data.education]
     updated[index].courses[cIndex] = value
-    onChange(updated)
+    updateSection('education', updated)
   }
 
   return (
     <section className="space-y-4 p-8">
       <h3 className="text-xl font-medium mt-4">Education</h3>
-      {education.map((item, i) => (
+      {data.education.map((item, i) => (
         <div key={i} className="border p-4 rounded-md space-y-2">
           <div className="flex justify-between items-center">
             <h4 className="text-lg font-medium">{item.institution || ">"}</h4>
@@ -35,9 +32,9 @@ export const EducationSection: React.FC<EducationSectionProps> = ({ education, o
               variant="destructive"
               size={"icon"}
               onClick={() => {
-                const updated = [...education]
+                const updated = [...data.education]
                 updated.splice(i, 1)
-                onChange(updated)
+                updateSection('education', updated)
               }}
             >
               <X />
@@ -63,9 +60,9 @@ export const EducationSection: React.FC<EducationSectionProps> = ({ education, o
                 variant="destructive"
                 size={"icon"}
                 onClick={() => {
-                  const updated = [...education]
+                  const updated = [...data.education]
                   updated[i].courses.splice(j, 1)
-                  onChange(updated)
+                  updateSection('education', updated)
                 }}
               >
                 <X />
@@ -76,9 +73,9 @@ export const EducationSection: React.FC<EducationSectionProps> = ({ education, o
             size={"sm"}
             variant="outline"
             onClick={() => {
-              const updated = [...education]
+              const updated = [...data.education]
               updated[i].courses.push("")
-              onChange(updated)
+              updateSection('education', updated)
             }}
           >
             + Add Course
@@ -88,8 +85,8 @@ export const EducationSection: React.FC<EducationSectionProps> = ({ education, o
       <Button
         size={"lg"}
         onClick={() =>
-          onChange([
-            ...education,
+          updateSection('education', [
+            ...data.education,
             {
               institution: "",
               url: "",
