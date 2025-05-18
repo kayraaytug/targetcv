@@ -9,7 +9,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 function App() {
   return (
-    <BrowserRouter basename="/targetcv">
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Hero />} />
         <Route path="/create" element={<Create />} />
