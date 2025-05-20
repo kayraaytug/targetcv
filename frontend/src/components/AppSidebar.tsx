@@ -97,13 +97,13 @@ export function AppSidebar({ activeSection, setActiveSection }: AppSidebarProps)
   };
 
   return (
-    <Sidebar>
+    <Sidebar collapsible="offcanvas">
+      <SidebarContent>
       <SidebarHeader className="flex items-center justify-between">
         <a href="/" className="text-xl font-bold tracking-tight">
           TargetCV
         </a>
       </SidebarHeader>
-      <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
