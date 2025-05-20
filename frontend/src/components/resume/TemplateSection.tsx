@@ -17,14 +17,14 @@ export default function ResumeTemplate({ onClick, selected, template }: Props) {
     >
       <div className="aspect-[3/4] w-full">
         <img
-          src={`/templates/${template.replace("jsonresume-theme-", "")}.png`}
+          src={`/targetcv/templates/${template.replace("jsonresume-theme-", "")}.png`}
           alt={template}
           className="object-cover w-full h-full"
         />
       </div>
       <div className="flex justify-center items-center py-2">
         <h4 className="text-lg font-medium text-center m-0">
-          {template.replace("jsonresume-theme-", "").replace(/-/g, " ")}
+          {template.replace("jsonresume-theme-", "Template ").replace(/-/g, " ")}
         </h4>
       </div>
     </div>
@@ -41,6 +41,7 @@ export function TemplateSection() {
 
   return (
     <section className="p-8 space-y-6">
+      <h3 className="text-xl font-medium mt-4">Template</h3>
       <p className="text-sm text-gray-500 italic">
         Template preview may differ from the actual PDF. I'm working on improving this.
       </p>

@@ -1,4 +1,4 @@
-import { Calendar, Inbox, User, Settings } from "lucide-react"
+import { FolderRoot, User, BookType, FileText, BriefcaseBusiness, GraduationCap, Trophy, Dumbbell } from "lucide-react"
 
 import {
   Sidebar,
@@ -33,7 +33,7 @@ const items: SidebarItem[] = [
   {
     title: "Template",
     id: "template",
-    icon: User,
+    icon: FileText,
   },
   {
     title: "Profile",
@@ -43,37 +43,37 @@ const items: SidebarItem[] = [
   {
     title: "Work",
     id: "work",
-    icon: Inbox,
+    icon: BriefcaseBusiness,
   },
   {
     title: "Education",
     id: "education",
-    icon: Calendar,
+    icon: GraduationCap,
   },
   {
     title: "Awards",
     id: "awards",
-    icon: Settings,
+    icon: Trophy,
   },
   {
     title: "Skills",
     id: "skills",
-    icon: Settings,
+    icon: Dumbbell,
   },
   {
     title: "Projects",
     id: "projects",
-    icon: Inbox,
+    icon: FolderRoot,
   },
   {
     title: "Languages",
     id: "languages",
-    icon: User,
+    icon: BookType,
   },
   {
     title: "References",
     id: "references",
-    icon: Inbox,
+    icon: User,
   },
 ];
 
