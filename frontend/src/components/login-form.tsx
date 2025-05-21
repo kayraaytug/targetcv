@@ -25,7 +25,7 @@ export function LoginForm({
     try {
       const userCredential = await signIn(email, password);
       console.log("Logged in:", userCredential.user);
-      navigate("/dashboard"); // 👈 redirect after successful login
+      navigate("/create"); // 👈 redirect after successful login
     } catch (error: any) {
       console.error("Login error:", error.message);
     }
@@ -47,7 +47,7 @@ export function LoginForm({
                   try {
                     const result = await signInWithGoogle();
                     console.log("Google login success:", result.user);
-                    navigate("/dashboard"); // ✅ Redirect after login
+                    navigate("/create"); // ✅ Redirect after login
                   } catch (error: any) {
                     console.error("Google login error:", error.message);
                   }
