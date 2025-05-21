@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { signIn, signInWithGoogle } from "@/hooks/useAuth"
+import { signInWithGoogle } from "@/hooks/useAuth"
 import { useNavigate } from "react-router-dom";
 
 export function LoginForm({
@@ -20,16 +20,16 @@ export function LoginForm({
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const userCredential = await signIn(email, password);
-      console.log("Logged in:", userCredential.user);
-      navigate("/dashboard"); // 👈 redirect after successful login
-    } catch (error: any) {
-      console.error("Login error:", error.message);
-    }
-  };
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     const userCredential = await signIn(email, password);
+  //     console.log("Logged in:", userCredential.user);
+  //     navigate("/dashboard"); // 👈 redirect after successful login
+  //   } catch (error: any) {
+  //     console.error("Login error:", error.message);
+  //   }
+  // };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -40,14 +40,14 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form>
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
                 <Button variant="outline" className="w-full" onClick={async () => {
                   try {
                     const result = await signInWithGoogle();
                     console.log("Google login success:", result.user);
-                    navigate("/dashboard"); // ✅ Redirect after login
+                    navigate("/create"); // ✅ Redirect after login
                   } catch (error: any) {
                     console.error("Google login error:", error.message);
                   }
@@ -97,7 +97,7 @@ export function LoginForm({
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <Button type="submit" className="w-full">
+                <Button className="w-full">
                   Login
                 </Button>
               </div>
